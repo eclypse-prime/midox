@@ -1,9 +1,11 @@
-use midly::{num::{u28, u7}, MidiMessage, TrackEvent, TrackEventKind};
-
+use midly::{
+    num::{u28, u7},
+    MidiMessage, TrackEvent, TrackEventKind,
+};
 
 pub fn clean_track<'a>(track: &'a Vec<TrackEvent<'a>>, threshold: u8) -> Vec<TrackEvent> {
     let threshold = u7::new(threshold);
-    
+
     let mut new_track: Vec<TrackEvent> = vec![];
     let mut last_delta: u28 = u28::new(0);
     let mut skip_off: bool = false;

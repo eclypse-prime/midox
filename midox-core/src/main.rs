@@ -17,12 +17,14 @@ fn main() -> Result<()> {
     println!("The file has {} tracks!", smf.tracks.len());
     println!("The file has {} notes!", count_notes(&smf));
 
-    let mut new_smf = Smf::new(
-        smf.header,
-    );
+    let mut new_smf = Smf::new(smf.header);
 
     let start = Instant::now();
-    new_smf.tracks = smf.tracks.iter().map(|track| clean_track(track, 1)).collect();
+    new_smf.tracks = smf
+        .tracks
+        .iter()
+        .map(|track| clean_track(track, 1))
+        .collect();
 
     println!("Processing time: {:?}", start.elapsed());
 
