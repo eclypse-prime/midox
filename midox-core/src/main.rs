@@ -1,16 +1,16 @@
 use std::time::Instant;
 
+use anyhow::Result;
 use midly::Smf;
-use midox_core::{analysis::count_notes, editing::clean_track};
+use midox_core::{analysis::count_notes, editing::clean_track, io::bytes_to_smf};
 
-fn main() -> std::io::Result<()> {
+fn main() -> Result<()> {
     let start = Instant::now();
 
     // Load bytes first
-    let data = std::fs::read("song.mid").unwrap();
+    let data = std::fs::read("song.mid")?;
 
-    // Parse the raw bytes
-    let smf = Smf::parse(&data).unwrap();
+    let smf = bytes_to_smf(&data)?;
 
     println!("Loading time: {:?}", start.elapsed());
 
@@ -22,9 +22,7 @@ fn main() -> std::io::Result<()> {
     );
 
     let start = Instant::now();
-    for track in smf.tracks {
-        new_smf.tracks.push(clean_track(track, 1));
-    }
+    new_smf.tracks = smf.tracks.iter().map(|track| clean_track(track, 1)).collect();
 
     println!("Processing time: {:?}", start.elapsed());
 
